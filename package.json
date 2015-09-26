@@ -1,0 +1,22 @@
+{
+  "name": "medcheck",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danagilliann/MedCheck.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danagilliann/MedCheck/issues"
+  },
+  "homepage": "https://github.com/danagilliann/MedCheck#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
