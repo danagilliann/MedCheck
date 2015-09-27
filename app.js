@@ -157,7 +157,7 @@ app.get('/patients/new', function(req, res) {
   })
 });
 app.post('/patients/new', function(req, res) {
-  var patient = new models.Patient({name: req.body.name, email: req.body.email, accessCode: req.body.accessCode});
+  var patient = new models.Patient({doctorId: req.body.doctorId, name: req.body.name, email: req.body.email, accessCode: req.body.accessCode});
   patient.save(function(err, data) {
     res.send(err ? ':(' : ':)');
   });

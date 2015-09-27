@@ -8,7 +8,7 @@
 
 	<select name='doctorId'>
 	<% doctors.forEach(function(doctor) { %>
-		<option value='<%= doctor._id %>'><%= doctor.name %></option>
+		<option name='doctorId' value='<%= doctor._id %>'><%= doctor.name %></option>
 	<% }); %>
 	</select>
 	</label>
