@@ -25,7 +25,7 @@ app.get('/doctors', function(req, res) {
   });
 });
 
-app.get('/doctors/new', function(res, res) {
+app.get('/doctors/new', function(req, res) {
   res.sendFile(path.join(__dirname + '/views/new_doctor.html'));
 })
 app.post('/doctors/new', function(req, res) {
@@ -34,8 +34,32 @@ app.post('/doctors/new', function(req, res) {
   );
   newDoctor.save(function(err) {
     res.send(err == null ? 'success :) ' : 'error');
-  })
-})
+  });
+});
+
+app.get('/doctor_feedback', function(req, res) { 
+  models.DoctorFeedback.find(function(err, doctor_feedback) { 
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(doctor_feedback);
+    }
+  });
+});
+
+app.get('/doctor_feedback/new', function(req, res) {
+  res.sendFile(path.join(__dirname + '/views/new_doctor_feedback.html'));
+});
+
+app.post('/doctor_feedback/new', function(req, res) {
+  var newDoctorFeedback = new models.DoctorFeedback(
+		{ feedback: req.body.feedback, date: req.body.date, improvement: req.body.improvement }
+  );
+  newDoctorFeedback.save(function(err) {
+    res.send(err == null ? 'successly ' : 'error');
+  });
+});
+
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
