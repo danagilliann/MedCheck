@@ -17,8 +17,6 @@ window.onload = function() {
 	    ]
 	};
 
-	debugger
-
 	var myChart = new Chart(buyers).Line(data);
 
 }
