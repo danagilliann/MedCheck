@@ -1,7 +1,17 @@
+<%- include _header.ejs %>
+
 <form method="POST" action="/patients/new">
 	<label>name: <input name="name" /></label>
 	<label>email: <input name="sleep" /></label>
 	<label>accessCode: <input name="heartbeat" /></label>
+	<label>doctor: 
+
+	<select name='doctorId'>
+	<% doctors.forEach(function(doctor) { %>
+		<option value='<%= doctor._id %>'><%= doctor.name %></option>
+	<% }); %>
+	</select>
+	</label>
 	<input type="submit" />
 </form>
 

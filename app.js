@@ -1,6 +1,7 @@
 var http = require('http'),
     express = require('express'),
     app = express(),
+    moment = require('moment'),
     expressSession = require('express-session'),
     bodyParser = require('body-parser')
     path = require('path');
@@ -151,7 +152,9 @@ app.get('/dashboard/:patient_id',checkDoctor, function(req, res) {
 });
 
 app.get('/patients/new', function(req, res) {
-  res.sendFile(path.join(__dirname + '/views/new_patient.html'));
+  models.Doctor.find(function(err, doctors) {
+    res.render('new_patient.ejs', {doctors: doctors});
+  })
 });
 app.post('/patients/new', function(req, res) {
   var patient = new models.Patient({name: req.body.name, email: req.body.email, accessCode: req.body.accessCode});
@@ -171,7 +174,11 @@ app.post('/sync_patient_data', function(req, res) {
   models.Patient.find({accessCode: req.body.accessCode}, function(err, patient) {
     to_add = {};
     for (var i = 0; i < req.body.length; i++) {
-      patient[type][req.body[i]['time']] = req.body[i]['val'];
+      var day = moment(req.body[i]['time']).millisecond(0).second(0).minute(0).hour(0);
+      if (!(day in to_add)) {
+        to_add[day] = {}
+      }
+      patient[type] = req.body[i]['val'];
     }
     patient.save(function(err, data) {
       console.log([err, data]);
