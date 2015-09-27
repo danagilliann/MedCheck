@@ -48,4 +48,4 @@ var doctorSchema = new mongoose.Schema({
 var Doctor = mongoose.model('Doctor', doctorSchema);
 module.exports.Doctor = Doctor;
 
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://user111:user111@ds037283.mongolab.com:37283/webcheck');
