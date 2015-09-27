@@ -18,16 +18,41 @@ canvas {
 
 }
 
+#main_content {
+	padding-left:25px;
+
+}
+
 .wrapper {
 	margin-top:50px;
 	width: calc(100% - 50px);
 	margin-bottom:20px;
-	margin-left:25px;
+	
 	}
+
+.md-button.md-raised:not([disabled]) {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+#comment {
+height:200px;
+width: 60%;
+background-color:#CCCCCC;
+box-shadow: none;
+border:none;
+padding: 10px;
+
+}
+
 
 h1 {
 	margin-left:25px;
 	font-family:'Raleway', 'sans-serif';
+
+}
+
+#pat_sel{
+	margin-left:25px;
 
 }
 
