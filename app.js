@@ -25,9 +25,11 @@ app.use(bodyParser());
 var adminRoutes = require('./routes/admin')(app, models),
     chartRoutes = require('./routes/charts')(app, models);
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
-});
+app.get('/', checkDoctor, function(req, res) {
+  models.Patient.find({doctorId: req.session.doctor_id}, function(err, patients) {
+    res.render('dashboard.ejs', {patients: patients, doctor: req.doctor});
+  })
+})
 
 app.get('/doctors', function(req, res) { 
   models.Doctor.find(function(err, doctors) { 
@@ -187,9 +189,18 @@ app.post('/sync_patient_data', function(req, res) {
   });
 });
 
-app.get('/weekview', function (req, res) {
-	res.sendFile(path.join(__dirname + '/views/weekview.html'));
+app.get('/weekview/:patient_id',checkDoctor, function(req, res) { 
+  models.Patient.findOne(
+      {_id: req.params.patient_id},
+      function(err, patient_data) { 
+    if (err) {
+      res.send(err);
+    } else {
+      res.render('weekview.ejs', {patient: patient_data});
+    }
+  });
 });
+
 
 var server = app.listen(3000, function () {
   var host = server.address().address;

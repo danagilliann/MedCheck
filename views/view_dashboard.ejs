@@ -8,7 +8,7 @@
 				<div class="wrapper">
 				<h1>Heartbeat Rate</h1>
 					<canvas id="heartrate"></canvas>
-					<button ng-click="loadDetail();">
+					<button ng-click="go('/weekview/<%= patient._id%>');">
  					 View last Week
 					</button>
 				</div>
@@ -16,7 +16,7 @@
 				<div class="wrapper">
 				<h1>Activity</h1>
 					<canvas id="activity"></canvas>
-					<button ng-click="loadDetail();">
+					<button ng-click="go('/weekview/<%= patient._id%>');">
  					 View last Week
 					</button>
 				</div>
@@ -24,7 +24,7 @@
 				<div class="wrapper">
 				<h1>Steps</h1>
 					<canvas id="steps"></canvas>
-					<button ng-click="loadDetail();">
+					<button ng-click="go('/weekview/<%= patient._id%>');">
  					 View last Week
 					</button>
 				</div>

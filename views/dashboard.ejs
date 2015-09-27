@@ -1,32 +1,42 @@
 <%- include _header.ejs %>
+<link rel="stylesheet" type="text/css" href="../../css/dashboard.css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
+
+<body>
 <div id="content" layout="row" layout-wrap>
 			
 			<div id="main_content" flex="80">
 				<div id="pat_sel">
 					<h1 style="margin-left:0;">Welcome <em><%= doctor.name %></em> back to the MedCheck program!</h1>
 					<p>Please select the patient you want to review:</p>
-					<table style="width:100%">
+					<div class="table-responsive">
+						<table class="table">
 
-						<tr>
-						<td>Name</td>
-						
-						</tr>
-						<% patients.forEach(function(patient) { %>							 
-							 <tr>
-							    
-							    <td><%= patient['name'] %></td>
-							    <td><%= patient['_id'] %></td>
-							    <td>	
-							    <a href="dashboard/<%= patient['_id'] %>"> View Patient </a>
+							<tr>
 
-							    </td>
-							  </tr>
+							<td>Name</td>
+							<td>ID</td>
+							<td> </td>
 
-							
-						<%	}) %>
-	    			</table> 
+							</tr>
 
+							<% patients.forEach(function(patient) { %>							 
+								 <tr>
+								    
+								    <td><%= patient['name'] %></td>
+								    <td><%= patient['_id'] %></td>
+								    <td>	
+								    <a href="dashboard/<%= patient['_id'] %>"> View Patient Data</a>
+
+								    </td>
+								  </tr>
+
+
+								
+							<%	}) %>
+		    			</table> 
+		    		</div>
 	    			<br>
     			</div>
     		</div>
