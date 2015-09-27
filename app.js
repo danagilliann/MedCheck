@@ -90,6 +90,26 @@ function checkDoctor(req, res, next) {
   })
 }
 
+
+app.post('/doctor_feedback/new', function(req, res) {
+  var feedback = new models.DoctorFeedback({
+  	 
+  	date:req.body.date, 
+  	feedback:req.body.feedback, 
+  	improvement:req.body.improvement,
+  	patientId: req.body.patientId,
+  	doctorId: req.body.doctorId,
+	patientName: req.body.patientName,
+	doctorName : req.body.patientName
+
+  });
+  feedback.save(function(err, data) {
+    res.send(err ? ':(' : ':)');
+  });
+})
+
+
+
 app.get('/dashboard/:patient_id/doctor_feedback/new', checkDoctor, function(req, res) {
   res.sendFile(path.join(__dirname + '/views/new_doctor_feedback.html'));
 });
@@ -101,13 +121,14 @@ app.get('/dashboard', checkDoctor, function(req, res) {
 })
 
 function getDashboardFinders(req, merge, is_full) {
-  var skinny = {doctorId: req.doctor._id, patientId: req.patient._id};
+  var skinny = {doctorId: req.body.doctorId, patientId: req.body.patientId};
   if (!merge) merge = {};
   if (is_full) {
-    skinny['doctorName'] = req.doctor.name;
-    skinny['patientName'] = req.patient.name;
+    skinny['doctorName'] = req.body.doctorName;
+    skinny['patientName'] = req.body.patientName;
   }
-  return Object.assign(skinny, merge);
+  //return Object.assign(skinny, merge);
+  	return req
 }
 
 app.get('/dashboard/:patient_id/doctor_feedback', checkDoctor, function(req, res) { 
@@ -125,7 +146,7 @@ app.post('/dashboard/:patient_id/doctor_feedback/new', checkDoctor, function(req
 		getDashboardFinders(req, {feedback: req.body.feedback, date: req.body.date, improvement: req.body.improvement }, true)
   );
   newDoctorFeedback.save(function(err) {
-    res.send(err == null ? 'successly ' : 'error');
+    res.send(err == null ? 'successfully ' : 'error');
   });
 });
 
@@ -172,22 +193,35 @@ app.post('/sync_patient_data', function(req, res) {
     return false;
   }
   var type = req.body.type;
+  var data = req.body['data'];
 
-  models.Patient.find({accessCode: req.body.accessCode}, function(err, patient) {
+  models.Patient.findOne({accessCode: req.body.accessCode}, function(err, patient) {
+    console.log('has patient');
     to_add = {};
-    for (var i = 0; i < req.body.length; i++) {
-      var day = moment(req.body[i]['time']).millisecond(0).second(0).minute(0).hour(0);
+    for (var i = 0; i < data.length; i++) {
+      var day = moment(data[i]['time']).millisecond(0).second(0).minute(0).hour(0);
       if (!(day in to_add)) {
         to_add[day] = {}
       }
-      patient[type] = req.body[i]['val'];
+      to_add[day][data[i]['time']] = Math.floor(data[i]['val']);
     }
-    patient.save(function(err, data) {
-      console.log([err, data]);
-      res.send('ok');
+    Object.keys(to_add).forEach(function(day){
+      var updateData = {};
+      updateData[type] = [];
+      var addToDb = [];
+      Object.keys(to_add[day]).forEach(function(key) {
+        updateData[type].push([key, to_add[day][key]]);
+      })
+      models.PatientData.update({patientId: patient._id, date: new Date(day)}, updateData, {upsert: true}, function(err) {
+        if (err) {
+          console.log('err!', err);
+        }
+      });
     });
+    res.end('OK');
   });
 });
+
 
 app.get('/weekview/:patient_id',checkDoctor, function(req, res) { 
   models.Patient.findOne(
@@ -199,6 +233,19 @@ app.get('/weekview/:patient_id',checkDoctor, function(req, res) {
       res.render('weekview.ejs', {patient: patient_data});
     }
   });
+
+ });
+
+app.get('/graphview', function(req, res) {
+  var finders = {};
+  if ('day' in req.params) {
+    finders['date'] = moment(req.params.day).millisecond(0).second(0).minute(0).hour(0);
+  } else if ('accessCode' in req.params) {
+    finders['accessCode'] = req.params.accessCode;
+  }
+  db.PatientData.find(finders, function(err, documents) {
+    res.json(documents);
+  })
 });
 
 
