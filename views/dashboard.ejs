@@ -1,8 +1,19 @@
-<ul>
-	<% patients.forEach(function(patient) { %>
-		<li>login for patient <%= patient['name'] %> <a href="/dashboard/<%= patient['_id'] %>">show patient <%= patient['name'] %></a>
-		</li>
-	<%	}) %>
+<%- include _header.ejs %>
 
-	<%= doctor.name %>
-</ul>
+<div id="content" layout="row" layout-wrap>
+			
+			<div id="main_content" flex="80">
+				<div id="pat_sel">
+					<h1 style="margin-left:0;">Welcome <em><%= doctor.name %></em> back to the MedCheck program!</h1>
+					<p>Please select the patient you want to review:</p>
+					<select name="singleSelect" ng-model="data.singleSelect" ng-change="loadData();">
+					<% patients.forEach(function(patient) { %>
+						<option value="<%= patient['_id'] %>"><%= patient['name'] %></option>
+					<%	}) %>
+	    			</select>
+	    			<br>
+    			</div>
+    		</div>
+		</div>
+	</body>
+</html>

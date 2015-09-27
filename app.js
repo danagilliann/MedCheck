@@ -76,7 +76,7 @@ function checkDoctor(req, res, next) {
     res.send('no doctor ('+JSON.stringify(req.session)+')');
   }
 
-  models.Doctor.find(req.session.doctor_id, function(err, doctor) {
+  models.Doctor.findOne({_id: req.session.doctor_id}, function(err, doctor) {
     if (!err) {
       req.doctor = doctor;
       return next();
