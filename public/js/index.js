@@ -1,4 +1,9 @@
 window.onload = function() {
+	//sticky sidebar:
+
+
+
+
 	//set config:
 	Chart.defaults.global.tooltipTemplate = "<%if (message){%><%=label%>: <%}%><%= value %>";
 

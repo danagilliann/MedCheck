@@ -24,8 +24,44 @@ canvas {
 	margin-bottom:20px;
 	margin-left:25px;
 	}
+
 h1 {
 	margin-left:25px;
 	font-family:'Raleway', 'sans-serif';
 
 }
+
+
+#sticky {
+	background-color: #E6E6E6;
+	position: fixed;
+	min-height: 100%;
+	padding-top: 120px;
+
+	}
+
+h3 {
+	margin:10px;
+	font-family: 'Raleway';
+	font-weight: 900;
+
+}
+
+
+p {
+	font-family:'Raleway';
+	font-size: 20px;
+
+
+}
+
+#patient_info {
+	margin-left:20px;
+	padding: 0 7px;
+
+}
+
+#sidebar_wrap{
+	padding:0 3px;
+
+	}
