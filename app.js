@@ -170,30 +170,46 @@ app.post('/sync_patient_data', function(req, res) {
     return false;
   }
   var type = req.body.type;
+  var data = req.body['data'];
 
-  models.Patient.find({accessCode: req.body.accessCode}, function(err, patient) {
+  models.Patient.findOne({accessCode: req.body.accessCode}, function(err, patient) {
+    console.log('has patient');
     to_add = {};
-    for (var i = 0; i < req.body.length; i++) {
-      var day = moment(req.body[i]['time']).millisecond(0).second(0).minute(0).hour(0);
+    for (var i = 0; i < data.length; i++) {
+      var day = moment(data[i]['time']).millisecond(0).second(0).minute(0).hour(0);
       if (!(day in to_add)) {
         to_add[day] = {}
       }
-      to_add[day][req.body[i]['time']] = req.body[i]['val'];
+      to_add[day][data[i]['time']] = Math.floor(data[i]['val']);
     }
     Object.keys(to_add).forEach(function(day){
-      var updateData = {type: to_add[day]};
-      models.PatientData.update({_id: patient._id, date: new Date(day)}, updateData, {upsert: true}, function(err) {
+      var updateData = {};
+      updateData[type] = [];
+      var addToDb = [];
+      Object.keys(to_add[day]).forEach(function(key) {
+        updateData[type].push([key, to_add[day][key]]);
+      })
+      models.PatientData.update({patientId: patient._id, date: new Date(day)}, updateData, {upsert: true}, function(err) {
         if (err) {
           console.log('err!', err);
         }
       });
-    })
-    patient.save(function(err, data) {
-      console.log([err, data]);
-      res.send('ok');
     });
+    res.end('OK');
   });
 });
+
+app.get('/graphview', function(req, res) {
+  var finders = {};
+  if ('day' in req.params) {
+    finders['date'] = moment(req.params.day).millisecond(0).second(0).minute(0).hour(0);
+  } else if ('accessCode' in req.params) {
+    finders['accessCode'] = req.params.accessCode;
+  }
+  db.PatientData.find(finders, function(err, documents) {
+    res.json(documents);
+  })
+})
 
 app.get('/weekview', function (req, res) {
 	res.sendFile(path.join(__dirname + '/views/weekview.html'));

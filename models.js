@@ -16,6 +16,7 @@ module.exports.DoctorFeedback = DoctorFeedback;
 
 var patientDataSchema = new mongoose.Schema({ 
   name: String,
+  date: Date,
   patientId: mongoose.Schema.ObjectId,
   energy: ["Mixed"],
   heartbeat: ["Mixed"],
