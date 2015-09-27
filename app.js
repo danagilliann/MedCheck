@@ -25,6 +25,11 @@ app.get('/doctors', function(req, res) {
   });
 });
 
+app.post('/data', function(req, res) {
+  console.log(req.body);
+  res.send('["ok", true]')
+})
+
 app.get('/doctors/new', function(res, res) {
   res.sendFile(path.join(__dirname + '/views/new_doctor.html'));
 })
