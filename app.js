@@ -138,7 +138,6 @@ app.get('/dashboard/:patient_id/patient_data', checkDoctor, function(req, res) {
   });
 });
 
-
 app.get('/dashboard/:patient_id',checkDoctor, function(req, res) { 
   models.Patient.findOne(
       {_id: req.params.patient_id},
@@ -181,6 +180,9 @@ app.post('/sync_patient_data', function(req, res) {
   });
 });
 
+app.get('/weekview', function (req, res) {
+	res.sendFile(path.join(__dirname + '/views/weekview.html'));
+});
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
