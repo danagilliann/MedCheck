@@ -1,0 +1,8 @@
+<ul>
+	<% patients.forEach(function(patient) { %>
+		<li>login for patient <%= patient['name'] %> <a href="/dashboard/<%= patient['_id'] %>">show patient <%= patient['name'] %></a>
+		</li>
+	<%	}) %>
+
+	<%= doctor.name %>
+</ul>

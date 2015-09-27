@@ -8,11 +8,17 @@ var http = require('http'),
 var mongoose = require('mongoose'),
     models = require('./models');
 
-
+app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.static('dist'));
 
-app.use(expressSession({secret: 'asdfjoiw4ig24phummmgpijiha'}));
+
+var MongoStore = require('connect-mongo')(expressSession);
+
+app.use(expressSession({
+  secret: 'asdfjoiw4ig24phummmgpijiha',
+  store: new MongoStore({db: 'sess'})
+}));
 app.use(bodyParser());
 
 var adminRoutes = require('./routes/admin')(app, models),
@@ -27,9 +33,23 @@ app.get('/doctors', function(req, res) {
     if (err) {
       res.send(err);
     } else {
-      res.json(doctors);
+      res.render('doctors.ejs', {doctors: doctors});
     }
   });
+});
+
+app.post('/doctor/login', function(req, res) {
+  var idt = req.body.id;
+  models.Doctor.find({_id: idt}, function(err, doctor) {
+    if (!err && doctor) {
+      req.session.doctor_id = idt;
+      req.session.save(function(err) {
+        res.send(":)");
+      });
+    } else {
+      res.send(err);
+    }
+  })
 });
 
 app.post('/data', function(req, res) {
@@ -51,14 +71,18 @@ app.post('/doctors/new', function(req, res) {
 });
 
 function checkDoctor(req, res, next) {
-  if (!req.session.doctor_id) return res.status(503);
+  if (!req.session.doctor_id) {
+    res.status(503);
+    res.send('no doctor ('+JSON.stringify(req.session)+')');
+  }
 
   models.Doctor.find(req.session.doctor_id, function(err, doctor) {
     if (!err) {
       req.doctor = doctor;
       return next();
     } else {
-      return res.status(503);
+      res.status(503);
+      res.send(":(");
     }
   })
 }
@@ -66,6 +90,12 @@ function checkDoctor(req, res, next) {
 app.get('/dashboard/:patient_id/doctor_feedback/new', checkDoctor, function(req, res) {
   res.sendFile(path.join(__dirname + '/views/new_doctor_feedback.html'));
 });
+
+app.get('/dashboard', checkDoctor, function(req, res) {
+  models.Patient.find({doctorId: req.session.doctor_id}, function(err, patients) {
+    res.render('dashboard.ejs', {patients: patients, doctor: req.doctor});
+  })
+})
 
 function getDashboardFinders(req, merge, is_full) {
   var skinny = {doctorId: req.doctor._id, patientId: req.patient._id};
@@ -107,6 +137,29 @@ app.get('/dashboard/:patient_id/patient_data', checkDoctor, function(req, res) {
     }
   });
 });
+
+
+app.get('/dashboard/:patient_id',checkDoctor, function(req, res) { 
+  models.Patient.findOne(
+      {_id: req.params.patient_id},
+      function(err, patient_data) { 
+    if (err) {
+      res.send(err);
+    } else {
+      res.render('view_dashboard.ejs', {patient: patient_data});
+    }
+  });
+});
+
+app.get('/patients/new', function(req, res) {
+  res.sendFile(path.join(__dirname + '/views/new_patient.html'));
+});
+app.post('/patients/new', function(req, res) {
+  var patient = new models.Patient({name: req.body.name, email: req.body.email, accessCode: req.body.accessCode});
+  patient.save(function(err, data) {
+    res.send(err ? ':(' : ':)');
+  });
+})
 
 app.post('/sync_patient_data', function(req, res) {
   var allowed_types = ['energy', 'heartbeat', 'exercise', 'distance'];

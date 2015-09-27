@@ -1,0 +1,5 @@
+<ul>
+	<% doctors.forEach(function(doctor) { %>
+		<li>login as doctor <%= doctor['name'] %> <form action="/doctor/login" method="POST"><input type="hidden" name="" value="hackgt2015" /><label>&raquo;<input type="submit" name="id" value="<%= doctor.id %>" /></label></form></li>
+	<%	}) %>
+</ul>

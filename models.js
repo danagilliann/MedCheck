@@ -31,7 +31,7 @@ var patientSchema = new mongoose.Schema({
   email: String,
   height: Number,
   weight: Number,
-  patientId: mongoose.Schema.ObjectId,
+  doctorId: mongoose.Schema.ObjectId,
   accessCode: String
 });
 
