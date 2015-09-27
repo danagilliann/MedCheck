@@ -1,22 +1,77 @@
 window.onload = function() {
-	var buyers = document.getElementById("buyers").getContext("2d");
+	//set config:
+	Chart.defaults.global.tooltipTemplate = "<%if (message){%><%=label%>: <%}%><%= value %>";
 
-	var data = {
-	    labels: ["11:00am", "12:00nn", "1:00pm", "2:00pm", "3:00pm"],
+
+
+	var hr = document.getElementById("heartrate").getContext("2d");
+
+	var activity = document.getElementById("activity").getContext("2d");
+
+	var steps = document.getElementById("steps").getContext("2d");
+
+	var data1 = {
+	    labels: ["04/10", "04/11", "04/12", "04/13", "04/14", "04/15", "04/16", "04/17", "04/18" , "04/19", "04/20", "04/21"],
 	    datasets: [
 					{
 					  label: "My First dataset",
-					  fillColor: "rgba(220,220,220,0.2)",
-					  strokeColor: "rgba(220,220,220,1)",
-					  pointColor: "rgba(220,220,220,1)",
-					  pointStrokeColor: "#fff",
-					  pointHighlightFill: "#fff",
+					  fillColor: "#F57656",
+					  strokeColor: "#FA3D2E",
+					  pointColor: "#FA3D2E",
+					  pointStrokeColor: "#FA3D2E",
+					  pointHighlightFill: "#FA3D2E",
 					  pointHighlightStroke: "rgba(220,220,220,1)",
-					  data: ["120","133","142","122","122"]
-					} 
+					  data: ["11","12","19","32","15", "9", "36", "45", "87", "66", "59", "95"]
+					  
+					}
 	    ]
 	};
 
-	var myChart = new Chart(buyers).Line(data);
+	var data2 = {
+	    labels: ["04/10", "04/11", "04/12", "04/13", "04/14", "04/15", "04/16", "04/17", "04/18" , "04/19", "04/20", "04/21"],
+	    datasets: [
+					{
+					  label: "My First dataset",
+					  fillColor: "#79BD8F",
+					  strokeColor: "#4B9663",
+					  pointColor: "#4B9663",
+					  pointStrokeColor: "#4B9663",
+					  pointHighlightFill: "#4B9663",
+					  pointHighlightStroke: "#4B9663",
+					  data: ["11","12","19","32","15", "9", "36", "45", "87", "66", "59", "95"]
+					}
+	    ]
+	};
+
+	var data3 = {
+	    labels: ["04/10", "04/11", "04/12", "04/13", "04/14", "04/15", "04/16", "04/17", "04/18" , "04/19", "04/20", "04/21"],
+	    datasets: [
+					{
+					  label: "My First dataset",
+					  fillColor: "#3EB8A4",
+					  strokeColor: "#0A8D77",
+					  pointColor: "#0A8D77",
+					  pointStrokeColor: "#0A8D77",
+					  pointHighlightFill: "#0A8D77",
+					  pointHighlightStroke: "#0A8D77",
+					  data: ["11","12","19","32","15", "9", "36", "45", "87", "66", "59", "95"]
+					}
+	    ]
+	};
+
+	var hrchart = new Chart(hr).Line(data1,{
+		datasetStrokeWidth : 5,
+
+	});
+
+	var actchart = new Chart(activity).Line(data2,{
+		datasetStrokeWidth : 5,
+
+	});
+
+	var stepchart = new Chart(steps).Line(data3,{
+		datasetStrokeWidth : 5,
+
+	});
 
 }
