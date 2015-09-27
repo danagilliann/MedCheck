@@ -36,7 +36,7 @@ h1 {
 	background-color: #E6E6E6;
 	position: fixed;
 	min-height: 100%;
-	padding-top: 120px;
+	padding-top: 20px;
 
 	}
 
@@ -50,9 +50,9 @@ h3 {
 
 p {
 	font-family:'Raleway';
-	font-size: 20px;
-
-
+	font-size: 17px;
+	font-weight: 900;
+	margin: 5px 0;
 }
 
 #patient_info {
