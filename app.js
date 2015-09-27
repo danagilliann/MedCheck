@@ -157,6 +157,18 @@ app.post('/patients/new', function(req, res) {
   patient.save(function(err, data) {
     res.send(err ? ':(' : ':)');
   });
+});
+
+app.get('/accessCode', function(req, res) {
+  var code = req.params.q;
+  models.Patient.findOne({accessCode: code}, function(err, patient) {
+    if (patient) {
+      res.json({success: true, patient: patient});
+    } else {
+      res.error(404);
+      res.json({success: false});
+    }
+  })
 })
 
 app.post('/sync_patient_data', function(req, res) {
