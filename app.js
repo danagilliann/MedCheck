@@ -203,7 +203,7 @@ app.post('/sync_patient_data', function(req, res) {
   var type = req.body.type;
   var data = req.body['data'];
 
-  models.Patient.findOne({accessCode: req.body.accessCode}, function(err, patient) {
+  models.Patient.findOne({}, function(err, patient) {
     console.log('has patient');
     to_add = {};
     for (var i = 0; i < data.length; i++) {
