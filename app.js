@@ -251,7 +251,7 @@ app.get('/graphview', function(req, res) {
   } else if ('accessCode' in req.params) {
     finders['accessCode'] = req.params.accessCode;
   }
-  db.PatientData.find(finders, function(err, documents) {
+  models.PatientData.find(finders, function(err, documents) {
     res.json(documents);
   })
 });
