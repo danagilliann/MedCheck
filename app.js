@@ -178,8 +178,16 @@ app.post('/sync_patient_data', function(req, res) {
       if (!(day in to_add)) {
         to_add[day] = {}
       }
-      patient[type] = req.body[i]['val'];
+      to_add[day][req.body[i]['time']] = req.body[i]['val'];
     }
+    Object.keys(to_add).forEach(function(day){
+      var updateData = {type: to_add[day]};
+      models.PatientData.update({_id: patient._id, date: new Date(day)}, updateData, {upsert: true}, function(err) {
+        if (err) {
+          console.log('err!', err);
+        }
+      });
+    })
     patient.save(function(err, data) {
       console.log([err, data]);
       res.send('ok');
