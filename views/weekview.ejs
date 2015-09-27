@@ -1,0 +1,61 @@
+<%- include _header.ejs %>
+	<script src="../../js/weekview.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/index.css">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+	<body>
+		<div id="content" layout="row" layout-wrap>
+			
+			<div id="main_content" flex="80">
+				
+
+				<div class="wrapper">
+				<h1>Heartbeat Rate</h1>
+
+				<form action="/dashboard/<%= patient._id %>/doctor_feedback/new" method="post">
+					<canvas id="heartrate"></canvas>
+						<div ng-controller="DatepickerDemoCtrl">
+						    <div class="row">
+						        <div class="col-md-6">
+						            <p class="input-group">
+						              <input name="date" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+						              <span class="input-group-btn">
+						                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+						              </span>
+						            </p>
+						        </div>
+
+	    					</div>
+	    				</div>
+	    				<p>Your Comment:</p>
+	    				<textarea  id="comment" ng-model="string" name="feedback"></textarea>	<br/> <br/>
+	    				<p>Your Recommendation for Improvement:</p>
+	    				<textarea  id="comment" ng-model="string" name="improvement"></textarea>	<br/> <br/>
+	    				<input type="hidden" name="patientId" value="<%= patient.name %>"/>
+	    				<input type="hidden" name="doctorId" value="<%= patient.name %>"/>
+
+	    				<input type="hidden" name="patientName" value="<%= patient.name %>"/>
+	    				<input type="hidden" name="doctorName" value="<%= patient.name %>"/>
+
+						<input type="submit"></input>
+ 				</form>	
+					
+					
+				</div>
+			</div>
+
+			<md-toolbar id="sticky" flex="20">
+				<div id="sidebar_wrapper">
+					<h1>Patient</h1>
+					<div id="patient_info">
+						<p>Name: <%= patient.name %></p>
+						
+						<p>Access Code: <%= patient.accessCode %> </p>
+					</div>
+				</div>
+
+			</md-toolbar>
+
+
+		</div>
+	</body>
+</html>

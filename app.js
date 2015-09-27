@@ -21,9 +21,11 @@ app.use(bodyParser());
 var adminRoutes = require('./routes/admin')(app, models),
     chartRoutes = require('./routes/charts')(app, models);
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
-});
+app.get('/', checkDoctor, function(req, res) {
+  models.Patient.find({doctorId: req.session.doctor_id}, function(err, patients) {
+    res.render('dashboard.ejs', {patients: patients, doctor: req.doctor});
+  })
+})
 
 app.get('/doctors', function(req, res) { 
   models.Doctor.find(function(err, doctors) { 
@@ -84,6 +86,26 @@ function checkDoctor(req, res, next) {
   })
 }
 
+
+app.post('/doctor_feedback/new', function(req, res) {
+  var feedback = new models.DoctorFeedback({
+  	 
+  	date:req.body.date, 
+  	feedback:req.body.feedback, 
+  	improvement:req.body.improvement,
+  	patientId: req.body.patientId,
+  	doctorId: req.body.doctorId,
+	patientName: req.body.patientName,
+	doctorName : req.body.patientName
+
+  });
+  feedback.save(function(err, data) {
+    res.send(err ? ':(' : ':)');
+  });
+})
+
+
+
 app.get('/dashboard/:patient_id/doctor_feedback/new', checkDoctor, function(req, res) {
   res.sendFile(path.join(__dirname + '/views/new_doctor_feedback.html'));
 });
@@ -95,13 +117,14 @@ app.get('/dashboard', checkDoctor, function(req, res) {
 })
 
 function getDashboardFinders(req, merge, is_full) {
-  var skinny = {doctorId: req.doctor._id, patientId: req.patient._id};
+  var skinny = {doctorId: req.body.doctorId, patientId: req.body.patientId};
   if (!merge) merge = {};
   if (is_full) {
-    skinny['doctorName'] = req.doctor.name;
-    skinny['patientName'] = req.patient.name;
+    skinny['doctorName'] = req.body.doctorName;
+    skinny['patientName'] = req.body.patientName;
   }
-  return Object.assign(skinny, merge);
+  //return Object.assign(skinny, merge);
+  	return req
 }
 
 app.get('/dashboard/:patient_id/doctor_feedback', checkDoctor, function(req, res) { 
@@ -119,7 +142,7 @@ app.post('/dashboard/:patient_id/doctor_feedback/new', checkDoctor, function(req
 		getDashboardFinders(req, {feedback: req.body.feedback, date: req.body.date, improvement: req.body.improvement }, true)
   );
   newDoctorFeedback.save(function(err) {
-    res.send(err == null ? 'successly ' : 'error');
+    res.send(err == null ? 'successfully ' : 'error');
   });
 });
 
@@ -207,6 +230,20 @@ app.post('/sync_patient_data', function(req, res) {
   });
 });
 
+
+app.get('/weekview/:patient_id',checkDoctor, function(req, res) { 
+  models.Patient.findOne(
+      {_id: req.params.patient_id},
+      function(err, patient_data) { 
+    if (err) {
+      res.send(err);
+    } else {
+      res.render('weekview.ejs', {patient: patient_data});
+    }
+  });
+
+ });
+
 app.get('/graphview', function(req, res) {
   var finders = {};
   if ('day' in req.params) {
@@ -217,11 +254,8 @@ app.get('/graphview', function(req, res) {
   db.PatientData.find(finders, function(err, documents) {
     res.json(documents);
   })
-})
-
-app.get('/weekview', function (req, res) {
-	res.sendFile(path.join(__dirname + '/views/weekview.html'));
 });
+
 
 var server = app.listen(process.env.PORT || 3000, function () {
   var host = server.address().address;
