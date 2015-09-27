@@ -6,11 +6,27 @@
 				<div id="pat_sel">
 					<h1 style="margin-left:0;">Welcome <em><%= doctor.name %></em> back to the MedCheck program!</h1>
 					<p>Please select the patient you want to review:</p>
-					<select name="singleSelect" ng-model="data.singleSelect" ng-change="loadData();">
-					<% patients.forEach(function(patient) { %>
-						<option value="<%= patient['_id'] %>"><%= patient['name'] %></option>
-					<%	}) %>
-	    			</select>
+					<table style="width:100%">
+
+						<tr>
+						<td>Name</td>
+						
+						</tr>
+						<% patients.forEach(function(patient) { %>							 
+							 <tr>
+							    
+							    <td><%= patient['name'] %></td>
+							    <td><%= patient['_id'] %></td>
+							    <td>	
+							    <a href="dashboard/<%= patient['_id'] %>"> View Patient </a>
+
+							    </td>
+							  </tr>
+
+							
+						<%	}) %>
+	    			</table> 
+
 	    			<br>
     			</div>
     		</div>

@@ -1,20 +1,32 @@
 <%- include _header.ejs %>
+	
+	<script src="../js/index.js"></script>
+	<body>
 
 		<div id="content" layout="row" layout-wrap>
 			<div id="main_content" flex="80">
 				<div class="wrapper">
 				<h1>Heartbeat Rate</h1>
 					<canvas id="heartrate"></canvas>
+					<button ng-click="loadDetail();">
+ 					 View last Week
+					</button>
 				</div>
 				
 				<div class="wrapper">
 				<h1>Activity</h1>
 					<canvas id="activity"></canvas>
+					<button ng-click="loadDetail();">
+ 					 View last Week
+					</button>
 				</div>
 				
 				<div class="wrapper">
 				<h1>Steps</h1>
 					<canvas id="steps"></canvas>
+					<button ng-click="loadDetail();">
+ 					 View last Week
+					</button>
 				</div>
 			</div>
 
