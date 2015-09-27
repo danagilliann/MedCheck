@@ -65,6 +65,29 @@ app.post('/doctor_feedback/new', function(req, res) {
   });
 });
 
+app.get('/patient_data', function(req, res) { 
+  models.PatientData.find(function(err, patient_data) { 
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(patient_data);
+    }
+  });
+});
+
+app.get('/patient_data/new', function(req, res) {
+  res.sendFile(path.join(__dirname + '/views/new_patient_data.html'));
+});
+
+app.post('/patient_data/new', function(req, res) {
+  var newPatientData = new models.PatientData(
+		{ name: req.body.name, sleep: req.body.sleep, heartbeat: req.body.heartbeat, exercise: req.body.exercise }
+  );
+  newPatientData.save(function(err) {
+    res.send(err == null ? 'successly ' : 'error');
+  });
+});
+
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
