@@ -7,6 +7,37 @@
 		<script src="js/index.js"></script>
 	</head>
 	<body>
-		<canvas id="buyers" width="600" height="400"></canvas>
+		<div id="content" layout="row" layout-wrap>
+			<div id="main_content" flex="80">
+				<div class="wrapper">
+				<h1>Heartbeat Rate</h1>
+					<canvas id="heartrate"></canvas>
+				</div>
+				
+				<div class="wrapper">
+				<h1>Activity</h1>
+					<canvas id="activity"></canvas>
+				</div>
+				
+				<div class="wrapper">
+				<h1>Steps</h1>
+					<canvas id="steps"></canvas>
+				</div>
+			</div>
+
+			<md-toolbar id="sticky" flex="20">
+				<div id="sidebar_wrapper">
+					<h1>Patient</h1>
+					<div id="patient_info">
+						<p>Name: Sterling Archer</p>
+						<p>Age: 38</p>
+						<p>Risk Factors: Alcoholism </p>
+					</div>
+				</div>
+
+			</md-toolbar>
+
+
+		</div>
 	</body>
 </html>
