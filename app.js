@@ -2,7 +2,7 @@ var http = require('http'),
     express = require('express'),
     app = express(),
     moment = require('moment'),
-    expressSession = require('express-session'),
+    //expressSession = require('express-session'),
     bodyParser = require('body-parser')
     path = require('path');
 
@@ -14,11 +14,11 @@ app.use(express.static('public'));
 app.use(express.static('dist'));
 
 
-var MongoStore = require('connect-mongo')(expressSession);
+// var MongoStore = require('connect-mongo')(expressSession);
 
 app.use(expressSession({
   secret: 'asdfjoiw4ig24phummmgpijiha',
-  store: new MongoStore({db: 'sess'})
+  //store: new MongoStore({db: 'sess'})
 }));
 app.use(bodyParser());
 

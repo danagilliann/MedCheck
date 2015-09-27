@@ -8,6 +8,7 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {"node": "=4.0"},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/danagilliann/MedCheck.git"
