@@ -17,9 +17,10 @@ module.exports.DoctorFeedback = DoctorFeedback;
 var patientDataSchema = new mongoose.Schema({ 
   name: String,
   patientId: mongoose.Schema.ObjectId,
-  sleep: ["Mixed"],
+  energy: ["Mixed"],
   heartbeat: ["Mixed"],
-  exercise: ["Mixed"]
+  exercise: ["Mixed"],
+  distance: ["Mixed"]
 });
 
 var PatientData = mongoose.model('PatientData', patientDataSchema);
@@ -31,7 +32,7 @@ var patientSchema = new mongoose.Schema({
   height: Number,
   weight: Number,
   patientId: mongoose.Schema.ObjectId,
-  password: String
+  accessCode: String
 });
 
 var Patient = mongoose.model('Patient', patientSchema);
